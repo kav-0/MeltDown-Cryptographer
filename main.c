@@ -1,58 +1,82 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 #include <string.h>
+#include <ctype.h>
 
-       /* 130 = é
-          133 = à
-          138 = è
-          135 = ç
-          136 = ê  */
+       /* 130 = Ã©
+          133 = Ã 
+          138 = Ã¨
+          135 = Ã§
+          136 = Ãª  */
 
 int main()
 {
+    start:
     switch(menu()){
         case 1:
+            cesar:
             system("cls");
             switch(cipher()){
             case 1:
+                system("cls");
                 cesarChiffrement();
             break;
+
             case 2:
-                printf("réussi césar 2");
+                system("cls");
+                cesarDechiffrement();
+            break;
             default:
-                printf("Choix indisponible");
+                system("cls");
+                printf("\nChoix indisponible");
+                Sleep(5000);
+                goto cesar;
             break;
             }
         break;
+
         case 2:
+            vigenere:
             system("cls");
             switch(cipher()){
             case 1:
-                printf("réussi vigénère 1");
+                system("cls");
+                vigenereChiffrement();
             break;
+
             case 2:
-                printf("réussi vigénère 2");
+                printf("rÃ©ussi vigÃ©nÃ¨re 2");
             default:
+                system("cls");
                 printf("Choix indisponible");
+                Sleep(5000);
+                goto vigenere;
             break;
             }
         break;
+
         case 3:
             system("cls");
             switch(cipher()){
             case 1:
-                printf("réussi binaire 1");
+                printf("rÃ©ussi binaire 1");
             break;
+
             case 2:
-                printf("réussi binaire 2");
+                printf("rÃ©ussi binaire 2");
             default:
                 printf("Choix indisponible");
             break;
             }
         break;
+
         default:
             system("cls");
             printf("Choix indisponible. Veuillez choisir entre les choix propos%cs. (1, 2, 3)", 130);
+            Sleep(5000);
+            system("cls");
+            goto start;
         break;
     }
 }
@@ -78,66 +102,49 @@ int menu(){
 
 int cipher(){
     int cipher;
+    int i;
     printf("Souhaites-tu chiffrer ? (1)\n"
            "Souhaites-tu d%cchiffrer ? (2)\n", 130, 133);
     scanf("%d", &cipher);
-    if ( scanf("%d", &cipher) != NULL )
-   {
-      char *newline = strchr(cipher, '\n');
-   }
+    purge();
     return cipher;
 }
 
-int cesarChiffrement(){
-    char message[2000];
-    char ch;
-    char rep[3];
-    char oui = 'oui';
-    int i, key;
+void cesarChiffrement() {
+    char message[100], ch;
+	int i, cle;
 
-    start:
-    printf("Entrez un message %c chiffrer: ", 133);
-    fgets( message, 2000, stdin );
-    printf("\nEntrez la cl%c: ", 130);
-    scanf("%d", &key);
+	printf("Entrez le message %c chiffrer: ", 133);
+	gets(message);
+	printf("Entrez la cl%c: ", 130);
+	scanf("%d", &cle);
 
-    for(i = 0; message[i] != '\0'; ++i){
-   	 ch = message[i];
+	for(i = 0; message[i] != '\0'; ++i){
+		ch = message[i];
 
-   	 if(ch >= 'a' && ch <= 'z'){
-   		 ch = ch + key;
+		if(ch >= 'a' && ch <= 'z'){
+			ch = ch + cle;
 
-   		 if(ch > 'z'){
-   			 ch = ch - 'z' + 'a' - 1;
-   		 }
+			if(ch > 'z'){
+				ch = ch - 'z' + 'a' - 1;
+			}
 
-   		 message[i] = ch;
-   	 }
-   	 else if(ch >= 'A' && ch <= 'Z'){
-   		 ch = ch + key;
+			message[i] = ch;
+		}
+		else if(ch >= 'A' && ch <= 'Z'){
+			ch = ch + cle;
 
-   		 if(ch > 'Z'){
-   			 ch = ch - 'Z' + 'A' - 1;
-   		 }
+			if(ch > 'Z'){
+				ch = ch - 'Z' + 'A' - 1;
+			}
 
-   		 message[i] = ch;
-   	 }
-    }
+			message[i] = ch;
+		}
+	}
 
-    printf("Message chiffr%c: %s", 130, message);
-    /*Sleep(1500);
-    printf("\nVoulez-vous recommencer ? (oui/non)\n");
-    scanf("%s", &rep);
-    if(rep == oui){
-        goto start;
-    }
-    else{
-        printf("\n\nD'accord. Je vous renvoie au menu.");
-        Sleep(5000);
-        system("cls");
-        menu();
-    }*/
-    return 0;
+	printf("Message chiffr%c: %s", 130, message);
+
+	return 0;
 }
 
 int cesarDechiffrement(){
@@ -177,8 +184,11 @@ int cesarDechiffrement(){
 	return 0;
 }
 
+int vigenereChiffrement(){
+
+}
 int chargement(){
-    //system("color 02");
+    system("color 02");
     printf("Chargement en cours\n"
            "0\%");
     Sleep(2000);
@@ -212,8 +222,14 @@ int chargement(){
     Sleep(2000);
     system("cls");
     printf("100\% \n"
-           "Chargement terminé. Lancement du programme de chiffrement \"MeltDown\"");
+           "Chargement terminÃ©. Lancement du programme de chiffrement \"MeltDown\"");
     Sleep(5000);
     system("cls");
 }
 
+void purge(void){
+    int buffer;
+    while ((buffer = getchar()) != '\n' && buffer != EOF)
+    {
+    }
+}
