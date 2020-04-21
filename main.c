@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 
        /* 130 = é
           133 = à
@@ -51,7 +52,8 @@ int main()
             break;
             //ON DECHIFFRE EN VIGENERE
             case 2:
-                printf("réussi vigénère 2");
+                system("cls");
+                vigenereDechiffrement();
             break;
             //MAUVAISE VALEURE, ON REDEMANDE
             default:
@@ -64,19 +66,25 @@ int main()
         break;
         //CHIFFREMENT BINAIRE
         case 3:
+            binaire:
             system("cls");
             switch(cipher()){
             //ON CHIFFRE EN BINAIRE
             case 1:
-                printf("réussi binaire 1");
+                system("cls");
+                binaireChiffrement();
             break;
             //ON DECHIFFRE EN BINAIRE
             case 2:
-                printf("réussi binaire 2");
+                system("cls");
+                binaireDechiffrement();
             break;
             //MAUVAISE VALEURE, ON REDEMANDE
             default:
+                system("cls");
                 printf("Choix indisponible");
+                Sleep(5000);
+                goto binaire;
             break;
             }
         break;
@@ -284,6 +292,102 @@ void vigenereChiffrement(){
     if(menu==1){
         system("cls");
         goto startChiffrement;
+    }
+    else{
+        system("cls");
+        main();
+    }
+}
+
+void vigenereDechiffrement(){
+    //on créé un tableau pour le message et un pour la clé
+    char msg[1000];
+    char key[1000];
+    //on demande le message chiffré en vigénère et on l'enregistre dans msg
+    printf("Entrez le message:");
+    gets(msg);
+    //on indique que la taille de msgLen est équivalente à celle de msg et pareil pour keyLen
+    int msgLen = strlen(msg), keyLen = strlen(key), i, j;
+    //on demande la clé et l'enregistre dans key
+    printf("Entrez la cl%c: ", 130);
+    gets(key);
+    //on dit que newKey = la taille du msg (car il faut chiffrer chaque lettres du message), pareil pour le message chiffré et déchiffré
+    char newKey[msgLen], encryptedMsg[msgLen], decryptedMsg[msgLen];
+    //on créé une nouvelle clé, qui fait la taille du message
+    for(i = 0, j = 0; i < msgLen; ++i, ++j){
+        if(j == keyLen)
+            j = 0;
+        newKey[i] = key[j];
+    }
+    newKey[i] = '\0';
+    //on commence à déchiffrer à partir d'ici
+    for(i = 0; i < msgLen; ++i){
+        //on indique que la lettre de decryptedMsg[i] est égal à la lettre de encryptedMsg[i] moins la lettre denewKey[i], auquel on rajoute 26, le résultat de ça est divisé par 26. Ensuite on ajoute A (ou 65 d'après la table ascii)
+        decryptedMsg[i] = (((encryptedMsg[i] - newKey[i]) +26) % 26) + 'A';
+    }
+    decryptedMsg[i] = '\0';
+    //on affiche la clé, la clé généré, le message déchiffré
+    printf("\nCl%c: %s", 130, key);
+    printf("\nNouvelle cl%c: %s", 130, newKey);
+    printf("\nMessage d%cchiffr%c: %s", 130, 130, decryptedMsg);
+
+	return 0;
+}
+
+void binaireChiffrement(){
+    int i, j=0, menu;
+    char msg[100];
+    startChiffrement:
+    printf("Entrez la phrase %c chiffrer: ", 133);
+    gets(msg);
+    for(i=0;i<8*strlen(msg);i++){
+        j++;
+        printf("%d",0 != (msg[i/8] & 1 << (~i&7)));
+        while(j==8){
+            printf(" ");
+            j=0;
+        }
+    }
+    printf("\n");
+    Sleep(3000);
+    printf("\n\nSouhaitez vous recommencer ?(Pour continuer entrez 1, sinon vous serez ramen%c au menu.)\n", 130);
+    scanf("%d", &menu);
+    purge(menu);
+    if(menu==1){
+        system("cls");
+        goto startChiffrement;
+    }
+    else{
+        system("cls");
+        main();
+    }
+}
+
+void binaireDechiffrement(void){
+    int i, rem, sum=0;
+    long int n;
+    startDechiffrement:
+    startDechiffrement:
+    printf("Entrez le binaire: ");
+    scanf("%d", &n);
+    i=0;
+    for(int j=0;j<n/8;j++){
+        while(n>0){
+            rem = n % 10;
+            sum = sum + rem * pow(2,i);
+            n = n/10;
+            i++;
+        }
+        printf("%c",sum);
+    }
+	printf("Message d%cchiffr%c: %s", 130, 130, message);
+    Sleep(3000);
+    printf("\n\nSouhaitez vous recommencer ?(Pour continuer entrez 1, sinon vous serez ramener au menu.)\n");
+    scanf("%d", &menu);
+    purge(menu);
+    if(menu==1){
+        system("cls");
+        goto startDechiffrement;
     }
     else{
         system("cls");
