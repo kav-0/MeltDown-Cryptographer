@@ -1,5 +1,5 @@
-# MeltDown-Cryptographer
-This tool is created by kav-0 (aka IAmZero). 
+# Kecharrm Cryptographer
+This tool is created by `Kecharrm`. 
 This tool is developed in C, and is designed to encrypt or decrypt text. 
 For the moment, this program supports the ciphers below:
 - The Vigenère
